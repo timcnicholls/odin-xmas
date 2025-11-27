@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>A Yuletide Odin!</title>
+
+  <!-- Bootstrap -->
+  <link href="js/bootstrap-5.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="js/fontawesome-free-5.15.1-web/css/all.min.css" rel="stylesheet">
+  <link href="css/odin-xmas.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
+        <div class="text-center">
+          <h4>Oh Tannenbaum, oh Tannenbaum!</h4>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div>
+          <label for="led_brightness" class="form-label">Brightness:</label>
+          <input type="range" class="form-range" min="0" max="1" step="0.01" id="led_brightness">
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <label for="led_mode" class="form-label">Mode:</label>
+        <select class="form-select" aria-label="Select mode" id="led_mode">
+          <option value="off">Off</option>
+          <option value="static">Static</option>
+          <option value="sparkle">Sparkle</option>
+          <option value="random">Random</option>
+          <option value="cycle">Cycle</option>
+        </select>
+
+      </div>
+      <div class="col-md-4">
+        <label for="led_colour" class="form-label">Colour:</label>
+        <select class="form-select" aria-label=Select colour" id="led_colour">
+          <option value="red">Red</option>
+          <option value="orange">Orange</option>
+          <option value="yellow">Yellow</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+          <option value="indigo">Indigo</option>
+          <option value="violet">Violet</option>
+          <option value="white">White</option>
+        </select>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+
+  </div>
+  <script src="js/bootstrap-5.1.1-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/odin_control.js"></script>
+  <script src="js/odin_xmas.js"></script>
+</body>
+
+</html>
