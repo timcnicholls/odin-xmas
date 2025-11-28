@@ -7,50 +7,53 @@ from colorzero import Color, Hue
 from odin.adapters.parameter_tree import ParameterTree
 from tornado.concurrent import run_on_executor
 
-from .tree import RGBXmasTree
+from .rgb_pixel_array import RGBPixelArray
 
 
 class XmasController:
-    LED_COLOURS = [
-        "red",
-        "orange",
-        "yellow",
-        "green",
-        "blue",
-        "indigo",
-        "violet",
-        "white",
-    ]
-    MODES = ["off", "static", "sparkle", "random", "cycle"]
-
-    executor = futures.ThreadPoolExecutor(max_workers=1)
 
     def __init__(self):
-        self._led_colour = "white"
-        self._mode = "static"
         brightness = 0.25
 
-        self.tree = RGBXmasTree(brightness=brightness)
+        array_params = {
+            "tree": { 
+                "mosi_pin": 12, "miso_pin":  9, "clock_pin": 25, "select_pin":  8,
+                "reverse_pixel_mode":False 
+            },
+            "house": { 
+                "mosi_pin": 23, "miso_pin": 11, "clock_pin": 24, "select_pin": 10,
+                "reverse_pixel_mode":True 
+            },
+        }
 
-        self.param_tree = ParameterTree(
-            {
-                "led_colour": (lambda: self._led_colour, self.set_led_colour),
-                "brightness": (lambda: self.tree.brightness, self.set_brightness),
-                "mode": (lambda: self._mode, self.set_mode),
-                "modes": self.MODES,
-                "led_colours": self.LED_COLOURS,
-            }
-        )
+        executor = futures.ThreadPoolExecutor(max_workers=len(array_params))
 
-        self._run_background_task = True
+        self.arrays = {}
+        param_tree = {
+            "modes": XmasLightArray.MODES,
+            "led_colours": XmasLightArray.LED_COLOURS,
+        }
+
+        for name, params in array_params.items():
+            self.arrays[name] = XmasLightArray(
+                name=name, brightness=brightness, executor=executor, **params
+            )
+            param_tree[name] = self.arrays[name].param_tree
+
+        self.param_tree = ParameterTree(param_tree)
 
     def initialize(self):
-        self.background_task()
+        for array in self.arrays.values():
+            try:
+                array.background_task()
+            except Exception as e:
+                print(e)
 
     def cleanup(self):
-        self._run_background_task = False
-        self.tree.off()
-        self.tree.close()
+        for array in self.arrays.values():
+            array.stop_background_task()
+            array.off()
+            array.close()
 
     def get(self, path):
         """Get values from the parameter tree.
@@ -75,53 +78,98 @@ class XmasController:
         # Return updated values from the tree
         return self.param_tree.get(path)
 
+class XmasLightArray:
+
+    LED_COLOURS = [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "violet",
+        "white",
+    ]
+    MODES = ["off", "static", "sparkle", "random", "cycle"]
+
+    def __init__(self, name, brightness, executor, **array_params):
+
+        self.name = name.capitalize()
+        self.brightness = brightness
+        self.executor = executor
+
+        self._led_colour = "white"
+        self._mode = "static"
+
+        self.array = RGBPixelArray(brightness = self.brightness, **array_params)
+
+        self.param_tree = ParameterTree(
+            {
+                "led_colour": (lambda: self._led_colour, self.set_led_colour),
+                "brightness": (lambda: self.array.brightness, self.set_brightness),
+                "mode": (lambda: self._mode, self.set_mode),
+            }
+        )
+
+        self._run_background_task = True
+
     def set_enable(self, value):
         value = bool(value)
         if value:
-            self.tree.color = Color(self._led_colour)
+            self.array.color = Color(self._led_colour)
         else:
-            self.tree.off()
+            self.array.off()
 
     def set_led_colour(self, colour):
         if colour in self.LED_COLOURS:
             self._led_colour = colour
         if self._mode == 'static':
-            self.tree.color = Color(self._led_colour)
+            self.array.color = Color(self._led_colour)
 
     def set_brightness(self, brightness):
         if 0.0 <= brightness <= 1.0:
-            self.tree.brightness = brightness
+            self.array.brightness = brightness
 
     def set_mode(self, mode):
         if mode in self.MODES:
             self._mode = mode
 
-    @run_on_executor
+    def off(self):
+        self.array.off()
+
+    def close(self):
+        self.array.close()
+
+    @run_on_executor(executor="executor")
     def background_task(self):
 
-        logging.debug("Starting background task")
+        logging.debug(f"{self.name} starting background task")
         while self._run_background_task:
             getattr(self, f"{self._mode}_task")()
 
-        logging.debug("Ending background task")
+        logging.debug(f"{self.name} ending background task")
+
+    def stop_background_task(self):
+
+        self._run_background_task = False
 
     def off_task(self):
-        logging.debug("Entering off mode")
+        logging.debug(f"{self.name} entering off mode")
         self.set_enable(False)
         while self._mode == 'off' and self._run_background_task:
             sleep(0.1)
-        logging.debug("Exiting off mode")
+        logging.debug(f"{self.name} exiting off mode")
 
     def static_task(self):
-        logging.debug("Entering static mode")
+        logging.debug(f"{self.name} entering static mode")
         self.set_enable(True)
         self.set_led_colour(self._led_colour)
         while self._mode == 'static' and self._run_background_task:
             sleep(0.1)
-        logging.debug("Exiting static mode")
+        logging.debug(f"{self.name} exiting static mode")
 
     def sparkle_task(self):
-        logging.debug("Entering sparkle mode")
+        logging.debug(f"{self.name} entering sparkle mode")
         self.set_enable(True)
 
         def random_colour():
@@ -131,24 +179,25 @@ class XmasController:
             return (r, g, b)
 
         while self._mode == 'sparkle' and self._run_background_task:
-            pixel = random.choice(self.tree)
+            pixel = random.choice(self.array)
             pixel.color = random_colour()
-        logging.debug("Exiting sparkle mode")
+
+        logging.debug(f"{self.name} exiting sparkle mode")
 
     def random_task(self):
-        logging.debug("Entering random mode")
+        logging.debug(f"{self.name} entering random mode")
         self.set_enable(True)
 
         while self._mode == 'random' and self._run_background_task:
-            self.tree.color = Color(random.choice(self.LED_COLOURS))
-            sleep(1.0)
-        logging.debug("Exiting random mode")
+            self.array.color = Color(random.choice(self.LED_COLOURS))
+            sleep(0.5)
+        logging.debug(f"{self.name} exiting random mode")
 
     def cycle_task(self):
-        logging.debug("Entering cycle mode")
+        logging.debug(f"{self.name} entering cycle mode")
         self.set_enable(True)
 
-        self.tree.color = Color('red')
+        self.array.color = Color('red')
         while self._mode == 'cycle' and self._run_background_task:
-            self.tree.color += Hue(deg=1)
-        logging.debug("Exiting cycle mode")
+            self.array.color += Hue(deg=1)
+        logging.debug(f"{self.name} exiting cycle mode")

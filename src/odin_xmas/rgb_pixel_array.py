@@ -35,9 +35,17 @@ class Pixel:
         self.value = (0, 0, 0)
 
 
-class RGBXmasTree(SourceMixin, SPIDevice):
-    def __init__(self, pixels=25, brightness=0.5, mosi_pin=12, clock_pin=25, *args, **kwargs):
-        super(RGBXmasTree, self).__init__(mosi_pin=mosi_pin, clock_pin=clock_pin, *args, **kwargs)
+class RGBPixelArray(SourceMixin, SPIDevice):
+    def __init__(
+        self, pixels=26, brightness=0.5, 
+        mosi_pin=23, miso_pin=9, clock_pin=24, select_pin=8, reverse_pixel_mode=False,
+        *args, **kwargs
+    ):
+        super(RGBPixelArray, self).__init__(
+            mosi_pin=mosi_pin, miso_pin=miso_pin, clock_pin=clock_pin, select_pin=select_pin, 
+            *args, **kwargs
+        )
+        self.reverse_pixel_mode = reverse_pixel_mode
         self._all = [Pixel(parent=self, index=i) for i in range(pixels)]
         self._value = [(0, 0, 0)] * pixels
         self.brightness = brightness
@@ -86,7 +94,11 @@ class RGBXmasTree(SourceMixin, SPIDevice):
                      # SSSBBBBB (start, brightness)
         brightness = 0b11100000 | self._brightness_bits
         pixels = [[int(255*v) for v in p] for p in value]
-        pixels = [[brightness, b, g, r] for r, g, b in pixels]
+        if self.reverse_pixel_mode:
+            pixels = [[brightness, r, b, g] for r, g, b in pixels]
+        else:
+            pixels = [[brightness, b, g, r] for r, g, b in pixels]
+
         pixels = [i for p in pixels for i in p]
         data = start_of_frame + pixels + end_of_frame
         self._spi.transfer(data)
@@ -99,10 +111,10 @@ class RGBXmasTree(SourceMixin, SPIDevice):
         self.value = ((0, 0, 0),) * len(self)
 
     def close(self):
-        super(RGBXmasTree, self).close()
+        super(RGBPixelArray, self).close()
 
 
 if __name__ == '__main__':
-    tree = RGBXmasTree()
+    tree = RGBPixelArray()
     
     tree.on()
