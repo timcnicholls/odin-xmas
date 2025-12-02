@@ -90,7 +90,7 @@ class XmasLightArray:
         "violet",
         "white",
     ]
-    MODES = ["off", "static", "sparkle", "random", "cycle"]
+    MODES = ["off", "static", "sparkle", "random", "cycle", "candy_stripe"]
 
     def __init__(self, name, brightness, executor, **array_params):
 
@@ -201,3 +201,20 @@ class XmasLightArray:
         while self._mode == 'cycle' and self._run_background_task:
             self.array.color += Hue(deg=1)
         logging.debug(f"{self.name} exiting cycle mode")
+
+    def candy_stripe_task(self):
+        logging.debug(f"{self.name} entering candy stripe mode")
+        self.set_enable(True)
+
+        values = [Color("red"), Color("white")] * len(self.array)
+        values = values[:len(self.array)]
+        values_flipped = [Color("white"), Color("red")] * len(self.array)
+        values_flipped = values_flipped[:len(self.array)]
+        flipped = 0
+
+        while self._mode == 'candy_stripe' and self._run_background_task:
+            self.array.value = values_flipped if flipped else values
+            flipped = 1 - flipped
+            sleep(0.5)
+
+        logging.debug(f"{self.name} exiting candy stripe mode")
