@@ -89,7 +89,81 @@ body {
 }
 
 .form-range {
-    accent-color: #c41e3a;
+    accent-color: #228b22;
+}
+
+/* Tree brightness slider - Green */
+#tree_led_brightness::-webkit-slider-thumb {
+    background-color: #228b22 !important;
+    border: 2px solid #228b22 !important;
+    box-shadow: 0 0 0 1px rgba(34, 139, 34, 0.3) !important;
+}
+
+#tree_led_brightness::-webkit-slider-thumb:hover {
+    background-color: #1e6b1e !important;
+    border-color: #1e6b1e !important;
+    box-shadow: 0 0 8px rgba(34, 139, 34, 0.6) !important;
+}
+
+#tree_led_brightness::-moz-range-thumb {
+    background-color: #228b22 !important;
+    border: 2px solid #228b22 !important;
+    box-shadow: 0 0 0 1px rgba(34, 139, 34, 0.3) !important;
+}
+
+#tree_led_brightness::-moz-range-thumb:hover {
+    background-color: #1e6b1e !important;
+    border-color: #1e6b1e !important;
+    box-shadow: 0 0 8px rgba(34, 139, 34, 0.6) !important;
+}
+
+#tree_led_brightness::-ms-thumb {
+    background-color: #228b22 !important;
+    border: 2px solid #228b22 !important;
+    box-shadow: 0 0 0 1px rgba(34, 139, 34, 0.3) !important;
+}
+
+#tree_led_brightness::-ms-thumb:hover {
+    background-color: #1e6b1e !important;
+    border-color: #1e6b1e !important;
+    box-shadow: 0 0 8px rgba(34, 139, 34, 0.6) !important;
+}
+
+/* House brightness slider - Red */
+#house_led_brightness::-webkit-slider-thumb {
+    background-color: #c41e3a !important;
+    border: 2px solid #c41e3a !important;
+    box-shadow: 0 0 0 1px rgba(196, 30, 58, 0.3) !important;
+}
+
+#house_led_brightness::-webkit-slider-thumb:hover {
+    background-color: #a01729 !important;
+    border-color: #a01729 !important;
+    box-shadow: 0 0 8px rgba(196, 30, 58, 0.6) !important;
+}
+
+#house_led_brightness::-moz-range-thumb {
+    background-color: #c41e3a !important;
+    border: 2px solid #c41e3a !important;
+    box-shadow: 0 0 0 1px rgba(196, 30, 58, 0.3) !important;
+}
+
+#house_led_brightness::-moz-range-thumb:hover {
+    background-color: #a01729 !important;
+    border-color: #a01729 !important;
+    box-shadow: 0 0 8px rgba(196, 30, 58, 0.6) !important;
+}
+
+#house_led_brightness::-ms-thumb {
+    background-color: #c41e3a !important;
+    border: 2px solid #c41e3a !important;
+    box-shadow: 0 0 0 1px rgba(196, 30, 58, 0.3) !important;
+}
+
+#house_led_brightness::-ms-thumb:hover {
+    background-color: #a01729 !important;
+    border-color: #a01729 !important;
+    box-shadow: 0 0 8px rgba(196, 30, 58, 0.6) !important;
 }
 
 .form-select {
