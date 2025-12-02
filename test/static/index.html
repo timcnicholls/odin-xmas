@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>A Yuletide Odin!</title>
+  <title>Have a Merry Odin Christmas!</title>
 
   <!-- Bootstrap -->
   <link href="js/bootstrap-5.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,18 +19,19 @@
     <div class="row">
       <div class="col-md-1"></div>
       <div class="col-md-10">
-        <div class="text-center">
-          <h4>Oh Tannenbaum, oh Tannenbaum!</h4>
+        <div class="text-center christmas-header">
+          <h1 class="christmas-title">🎄 Have a Merry Odin Christmas! 🎁</h1>
+          <p class="christmas-subtitle">Control your festive LED displays</p>
         </div>
       </div>
       <div class="col-md-1"></div>
     </div>
 
-    <div class="row">
-      <div class="col-md-2"><strong>Tree</strong></div>
+    <div class="row christmas-section">
+      <div class="col-md-2"><strong class="section-title tree-section">🎄 Tree</strong></div>
       <div class="col-md-8">
         <div>
-          <label for="tree_led_brightness" class="form-label">Brightness:</label>
+          <label for="tree_led_brightness" class="form-label">🌟 Brightness:</label>
           <input type="range" class="form-range" min="0" max="1" step="0.01" id="tree_led_brightness">
         </div>
       </div>
@@ -40,7 +41,7 @@
     <div class="row">
       <div class="col-md-2"></div>
       <div class="col-md-4">
-        <label for="tree_led_mode" class="form-label">Mode:</label>
+        <label for="tree_led_mode" class="form-label">✨ Mode:</label>
         <select class="form-select" aria-label="Select mode" id="tree_led_mode">
           <option value="off">Off</option>
           <option value="static">Static</option>
@@ -52,7 +53,7 @@
 
       </div>
       <div class="col-md-4">
-        <label for="tree_led_colour" class="form-label">Colour:</label>
+        <label for="tree_led_colour" class="form-label">🎨 Colour:</label>
         <select class="form-select" aria-label="Select colour" id="tree_led_colour">
           <option value="red">Red</option>
           <option value="orange">Orange</option>
@@ -71,11 +72,11 @@
      <div class class="col-md-12">&nbsp;</div>
     </div>
 
-    <div class="row">
-      <div class="col-md-2"><strong>House</strong></div>
+    <div class="row christmas-section">
+      <div class="col-md-2"><strong class="section-title house-section">🏠 House</strong></div>
       <div class="col-md-8">
         <div>
-          <label for="house_led_brightness" class="form-label">Brightness:</label>
+          <label for="house_led_brightness" class="form-label">🌟 Brightness:</label>
           <input type="range" class="form-range" min="0" max="1" step="0.01" id="house_led_brightness">
         </div>
       </div>
@@ -85,7 +86,7 @@
     <div class="row">
       <div class="col-md-2"></div>
       <div class="col-md-4">
-        <label for="house_mode" class="form-label">Mode:</label>
+        <label for="house_mode" class="form-label">✨ Mode:</label>
         <select class="form-select" aria-label="Select mode" id="house_led_mode">
           <option value="off">Off</option>
           <option value="static">Static</option>
@@ -97,7 +98,7 @@
 
       </div>
       <div class="col-md-4">
-        <label for="house_led_colour" class="form-label">Colour:</label>
+        <label for="house_led_colour" class="form-label">🎨 Colour:</label>
         <select class="form-select" aria-label="Select colour" id="house_led_colour">
           <option value="red">Red</option>
           <option value="orange">Orange</option>

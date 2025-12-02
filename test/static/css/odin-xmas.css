@@ -1,23 +1,198 @@
+/* Christmas Theme Styles */
+body {
+    background: linear-gradient(45deg, #0f4c3a, #1a5f4a, #0f4c3a);
+    background-size: 400% 400%;
+    animation: christmasGradient 10s ease infinite;
+    min-height: 100vh;
+    font-family: 'Georgia', serif;
+}
+
+@keyframes christmasGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.christmas-header {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: linear-gradient(45deg, #c41e3a, #228b22);
+    background-size: 400% 400%;
+    animation: christmasHeaderGlow 8s ease infinite;
+    border-radius: 15px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes christmasHeaderGlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.christmas-title {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    animation: twinkle 2s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+    from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.5); }
+    to { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6); }
+}
+
+.christmas-subtitle {
+    font-size: 1.2em;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.christmas-section {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(196, 30, 58, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.section-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.tree-section {
+    color: #228b22;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3), 0 0 10px rgba(34, 139, 34, 0.3);
+}
+
+.house-section {
+    color: #8b4513;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3), 0 0 10px rgba(139, 69, 19, 0.3);
+}
+
+.form-label {
+    font-weight: bold;
+    color: #c41e3a;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.form-range {
+    accent-color: #c41e3a;
+}
+
+.form-select {
+    border: 2px solid #c41e3a;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 240, 240, 0.9));
+    color: #c41e3a;
+    font-weight: bold;
+}
+
+.form-select:focus {
+    border-color: #228b22;
+    box-shadow: 0 0 15px rgba(34, 139, 34, 0.4);
+}
+
+.form-select option {
+    background: white;
+    color: #c41e3a;
+}
+
+/* Snowflake Animation */
+.snowflake {
+    position: fixed;
+    top: -10px;
+    z-index: 1000;
+    color: white;
+    font-size: 1em;
+    animation: fall linear infinite;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    from {
+        transform: translateY(-100vh) rotate(0deg);
+    }
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+/* Christmas Lights Effect */
+.christmas-lights {
+    position: relative;
+    overflow: hidden;
+}
+
+.christmas-lights:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: repeating-linear-gradient(
+        90deg,
+        #ff0000 0px,
+        #ff0000 10px,
+        #00ff00 10px,
+        #00ff00 20px,
+        #ffff00 20px,
+        #ffff00 30px,
+        #ff0000 30px
+    );
+    animation: lightsMove 3s linear infinite;
+}
+
+@keyframes lightsMove {
+    0% { transform: translateX(-30px); }
+    100% { transform: translateX(0px); }
+}
+
+/* Legacy styles - updated for Christmas theme */
 .execute-btn {
     float: right;
+    background: linear-gradient(45deg, #c41e3a, #228b22);
+    border: none;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.execute-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(196, 30, 58, 0.4);
 }
 
 .card-header {
-    color: #007bff;
+    color: #c41e3a;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 240, 240, 0.9));
+    border-radius: 10px 10px 0 0;
+    font-weight: bold;
 }
 
 .pre-scrollable {
-    background-color: #f7f7f7;
-    border: 1px solid black;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 255, 240, 0.9));
+    border: 2px solid #228b22;
+    border-radius: 10px;
     white-space: pre-wrap;
-    height: 340px
+    height: 340px;
+    color: #0f4c3a;
 }
-
-/* .row-padded {
-  padding: 30px;
-  background-color: #F7F7F7;
-  border: 1px solid #DDD;
-} */
 
 [data-bs-toggle="collapse"]:after {
     display: inline-block;
@@ -29,6 +204,7 @@
     content: "\f054";
     transform: rotate(90deg);
     transition: all linear 0.25s;
+    color: #c41e3a;
 }
 
 [data-bs-toggle="collapse"].collapsed:after {
